@@ -1,32 +1,34 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <a-locale-provider :locale="locale">
+      <router-view />
+    </a-locale-provider>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+// import zhTW from 'ant-design-vue/lib/locale-provider/zh_TW';
+import enUS from 'ant-design-vue/lib/locale-provider/en_US';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+import moment from 'moment'; //日历等部分组件内用的是moment 需要单独切换
+export default {
+  data() {
+    return {
+      locale: zhCN
+    };
+  },
+  watch: {
+    '$route.query.locale': function(value) {
+      this.locale = value === 'enUS' ? enUS : zhCN;
+      moment.locale(value === 'enUS' ? 'en' : 'zh-cn');
     }
   }
+};
+</script>
+
+<style lang="less">
+#app {
+  height: 100%;
 }
 </style>
